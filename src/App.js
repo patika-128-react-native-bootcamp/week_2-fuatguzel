@@ -1,112 +1,81 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import type {Node} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
-  View,
+  FlatList,
+  View
 } from 'react-native';
+import styles from './App.style';
+import Badge from './components/Badge';
+import Button from './components/Button';
+import Input from './components/Input';
+import ProductCard from './components/ProductCard';
+import ProductInput from './components/ProductInput';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+const Line = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+    <View style={styles.line} />
+  )
+}
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const [productList, setProductList] = React.useState([]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const handleProduct = (name, price) => {
+    setProductList([...productList, {
+      name,
+      price
+    }]);
+  }
+
+//   const handleFilter = (filter) => {
+//     switch (filter) {
+//       case 'Artan':
+//         setProductList(productList.sort((a, b) => a.price - b.price));
+//         break;
+//       case 'Azalan':
+//         setProductList(productList.sort((a, b) => b.price - a.price));
+//         break;
+//       case 'Tarih':
+//         setProductList(productList.sort((a, b) => a.id - b.id));
+//         break;
+//       default:
+//         setProductList(productList.sort((a, b) => a.id - b.id));
+//   }
+// }
+
+  const renderProducts = ({item}) => {
+    return (
+      <View>
+        <ProductCard name={item.name} price={item.price} />
+        <Line />
+      </View>
+    )
+  }
+  
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container} >
+      <View style={styles.button_container}>
+        {/* // TODO: butonlar badge */}
+        <Badge 
+          // onFilter={handleFilter("Artan")}
+        />
+      </View>
+      <View style={styles.flatList}>
+        <FlatList
+          data={productList}
+          renderItem={renderProducts}
+          keyExtractor={(item, index) => {
+          return index.toString();
+        }}
+        />
+      </View>
+      <View style={styles.product_container}>
+        <ProductInput onInput={handleProduct} />
+      </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
