@@ -75,3 +75,13 @@ npm run test
   - Tap "Reload" to refresh application
   - Tap "Show Inspector" to get a nice layout/component inspector inside your application.
   - Tap "Hide Inspector" to hide the inspector.
+
+
+## TODOs
+
+- [ ] Filter buttons must be work.
+- [ ] When the items add to the FlatList must immediately change
+
+## Screenshot
+
+![App](./src/assets/app.jpeg)
